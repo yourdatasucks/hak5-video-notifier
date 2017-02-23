@@ -2,7 +2,7 @@ require 'sinatra'
 require 'gmail'
 class Hak5Notifier < Sinatra::Base
 
-	gmail = Gmail.connect(ENV["UNAME"], ENV["PW"])
+	gmail = Gmail.connect({uname:ENV['UNAME']}, {pw:ENV['PW']})
 
 	get '/' do 
 		@prev_unread = 0
