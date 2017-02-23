@@ -2,9 +2,10 @@ require 'sinatra'
 require 'gmail'
 class Hak5Notifier < Sinatra::Base
 
-	gmail = Gmail.connect(ENV['UNAME'], ENV['PW'])
+	
 
 	get '/' do 
+		gmail = Gmail.connect(ENV['UNAME'], ENV['PW'])
 		@prev_unread = 0
 		while @prev_unread == 0 do
 			#get the number of unread messages in the inbox
