@@ -2,15 +2,14 @@ require 'sinatra'
 require 'gmail'
 class Hak5Notifier < Sinatra::Base
 
-	
+	gmail = Gmail.connect!(ENV['UNAME'], ENV['PW'])
 
 	get '/' do 
-		gmail = Gmail.connect(ENV['UNAME'], ENV['PW'])
 		@prev_unread = 0
 		while @prev_unread == 0 do
 			#get the number of unread messages in the inbox
-			#unread = gmail.mailbox('Hak5 Videos').count(:unread)
-			unread = gmail.inbox.count
+			unread = gmail.mailbox('Hak5 Videos').count(:unread)
+
 
 			if unread > @prev_unread
 			    @newHak5Videos = unread
@@ -23,6 +22,7 @@ class Hak5Notifier < Sinatra::Base
 		end
 		erb :'unread'
 	end
+
 
 
 
