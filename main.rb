@@ -8,7 +8,8 @@ class Hak5Notifier < Sinatra::Base
 		@prev_unread = 0
 		while @prev_unread == 0 do
 			#get the number of unread messages in the inbox
-			unread = gmail.mailbox('Hak5 Videos').count(:unread)
+			#unread = gmail.mailbox('Hak5 Videos').count(:unread)
+			unread = gmail.inbox.count(:unread)
 
 			if unread > @prev_unread
 			    @newHak5Videos = unread
