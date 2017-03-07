@@ -1,29 +1,39 @@
-require 'sinatra'
 require 'gmail'
-class Hak5Notifier < Sinatra::Base
+require 'serialport'
+
 
 	gmail = Gmail.connect!(ENV['UNAME'], ENV['PW'])
 
-	get '/' do 
-		@prev_unread = 0
-		while @prev_unread == 0 do
-			#get the number of unread messages in the inbox
-			unread = gmail.mailbox('Hak5 Videos').count(:unread)
+	#count the number of unread messages
+prev_unread = gmail.mailbox('Hak5 Videos').count(:unread)
 
 
-			if unread > @prev_unread
-			    @newHak5Videos = unread
-			end
-
-			  #reset the number of unread emails
-			  @prev_unread = unread
+port_file = '/dev/cu.uart'
 
 
-		end
-		erb :'unread'
-	end
+baud_rate = 9600
 
+data_bits = 8
+stop_bits = 1
+parity = SerialPort::NONE
 
+port = SerialPort.new(port_file, baud_rate, data_bits, stop_bits, parity)
 
+wait_time = 4
 
+loop do
+  unread = gmail.mailbox('Hak5 Videos').count(:unread)
+
+  puts "Checked unread."
+
+  if unread > prev_unread
+    port.write "b"
+  else
+  	port.write "c"
+  end
+  	
+
+  prev_unread = unread
+
+  sleep wait_time
 end
