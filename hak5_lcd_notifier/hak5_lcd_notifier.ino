@@ -4,6 +4,11 @@ void setup() {
   // put your setup code here, to run once:
   Serial.begin(9600);
   lcd.begin(16, 2);
+  lcd.setCursor(3,0);
+  lcd.write("Hak5 Video");
+  lcd.setCursor(4,1);
+  lcd.write("Notifier");
+  delay(10000);
 }
 
 void write_message(){
