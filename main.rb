@@ -30,6 +30,11 @@ require 'serialport'
   port = SerialPort.new(port_file, baud_rate, data_bits, stop_bits, parity)
 
   # you may want to change this wait_time variable; it is in seconds
+  # update: change the wait_time variable in the else statement
+  #   of the loop; this way when no new notifications are available
+  #   the count of messages has more delay; if we have unread 
+  #   messages we wait for 10 seconds to see if we have looked at 
+  #   the new message; not perfect, but better than original
   wait_time = 10
 
   loop do
@@ -41,9 +46,11 @@ require 'serialport'
 
     if unread > prev_unread
       #puts "should be writing new vid"
+      wait_time = 10
       port.write "b"
     else
       #puts "should be writing no new vids"
+      wait_time = 3600
       prev_unread = unread
       port.write "c"
     end
