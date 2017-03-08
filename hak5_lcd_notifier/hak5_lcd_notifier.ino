@@ -32,6 +32,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   if(Serial.available() > 0) {
     byte byte_read = Serial.read();
+    Serial.print("byte_read" + byte_read);
     got_char((char)byte_read);
   }
 }
