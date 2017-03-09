@@ -38,7 +38,9 @@ require 'serialport'
   wait_time = 10
 
   loop do
-
+    if !gmail.logged_in?
+      gmail = Gmail.connect!(ENV['UNAME'], ENV['PW'])
+    end
     unread = gmail.mailbox('Hak5 Videos').count(:unread)
     puts "prev_unread: #{prev_unread}"
     puts "Unread: #{unread}"
@@ -54,7 +56,8 @@ require 'serialport'
       prev_unread = unread
       port.write "c"
     end
-
+    
+    gmail.logout
     sleep wait_time
   	
 end
